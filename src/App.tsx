@@ -1,0 +1,1689 @@
+import { FormEvent, ReactNode, useEffect, useState } from "react";
+
+type Page = "home" | "features" | "solutions" | "pricing" | "about" | "contact";
+
+const pageLabels: Record<Page, string> = {
+  home: "Home",
+  features: "Features",
+  solutions: "Solutions",
+  pricing: "Pricing",
+  about: "About us",
+  contact: "Book a demo",
+};
+
+function Icon({
+  name,
+  size = 20,
+  className = "",
+}: {
+  name: string;
+  size?: number;
+  className?: string;
+}) {
+  const paths: Record<string, ReactNode> = {
+    arrow: (
+      <>
+        <path d="M5 12h14M13 6l6 6-6 6" />
+      </>
+    ),
+    check: <path d="m5 12 4 4L19 6" />,
+    chevron: <path d="m7 10 5 5 5-5" />,
+    menu: (
+      <>
+        <path d="M4 7h16M4 12h16M4 17h16" />
+      </>
+    ),
+    close: (
+      <>
+        <path d="M6 6l12 12M18 6 6 18" />
+      </>
+    ),
+    calendar: (
+      <>
+        <rect x="3" y="5" width="18" height="16" rx="2" />
+        <path d="M16 3v4M8 3v4M3 10h18" />
+      </>
+    ),
+    users: (
+      <>
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+      </>
+    ),
+    wallet: (
+      <>
+        <path d="M20 7V5a2 2 0 0 0-2-2H5a3 3 0 0 0 0 6h16v10a2 2 0 0 1-2 2H5a3 3 0 0 1-3-3V6" />
+        <path d="M16 14h2" />
+      </>
+    ),
+    chart: (
+      <>
+        <path d="M4 19V9M10 19V5M16 19v-7M22 19V3" />
+      </>
+    ),
+    tooth: (
+      <>
+        <path d="M12 3.2c-2.1 0-3.1-1.1-5.2-.5C3.5 3.7 2.2 7 3.2 10c.8 2.3 2.4 3.4 2.8 6.2.3 2.1.8 4.8 2.5 4.8 2.1 0 1.4-5.9 3.5-5.9s1.4 5.9 3.5 5.9c1.7 0 2.2-2.7 2.5-4.8.4-2.8 2-3.9 2.8-6.2 1-3-.3-6.3-3.6-7.3-2.1-.6-3.1.5-5.2.5Z" />
+      </>
+    ),
+    flask: (
+      <>
+        <path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3" />
+        <path d="M7.5 15h9" />
+      </>
+    ),
+    desktop: (
+      <>
+        <rect x="2" y="3" width="20" height="14" rx="2" />
+        <path d="M8 21h8M12 17v4" />
+      </>
+    ),
+    shield: (
+      <>
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+        <path d="m9 12 2 2 4-4" />
+      </>
+    ),
+    clock: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 7v5l3 2" />
+      </>
+    ),
+    globe: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
+      </>
+    ),
+    report: (
+      <>
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" />
+        <path d="M14 2v6h6M8 17v-3M12 17v-6M16 17v-2" />
+      </>
+    ),
+    xray: (
+      <>
+        <rect x="3" y="4" width="18" height="16" rx="2" />
+        <path d="m7 15 3-3 2 2 3-4 3 5M8 8h.01" />
+      </>
+    ),
+    spark: (
+      <>
+        <path d="m12 3 1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3Z" />
+        <path d="m19 15 .7 2.3L22 18l-2.3.7L19 21l-.7-2.3L16 18l2.3-.7L19 15Z" />
+      </>
+    ),
+    mail: (
+      <>
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <path d="m3 7 9 6 9-6" />
+      </>
+    ),
+    play: <path d="m9 7 8 5-8 5V7Z" />,
+  };
+  return (
+    <svg
+      className={className}
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {paths[name]}
+    </svg>
+  );
+}
+
+function Logo({ light = false }: { light?: boolean }) {
+  return (
+    <div className={`logo ${light ? "logo-light" : ""}`}>
+      <span className="logo-mark">
+        <span className="logo-cut" />
+      </span>
+      <span>DentiChair</span>
+    </div>
+  );
+}
+
+function Button({
+  children,
+  variant = "primary",
+  onClick,
+  type = "button",
+}: {
+  children: ReactNode;
+  variant?: "primary" | "secondary" | "light";
+  onClick?: () => void;
+  type?: "button" | "submit";
+}) {
+  return (
+    <button className={`button button-${variant}`} onClick={onClick} type={type}>
+      {children}
+    </button>
+  );
+}
+
+function Badge({ children }: { children: ReactNode }) {
+  return (
+    <div className="eyebrow">
+      <span>
+        <Icon name="spark" size={14} />
+      </span>
+      {children}
+    </div>
+  );
+}
+
+function Navbar({ page, navigate }: { page: Page; navigate: (page: Page) => void }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <header className="nav-wrap">
+      <nav className="nav container">
+        <button
+          className="logo-button"
+          onClick={() => navigate("home")}
+          aria-label="DentiChair home"
+        >
+          <Logo />
+        </button>
+        <div className="nav-links">
+          {(["features", "solutions", "pricing", "about"] as Page[]).map((item) => (
+            <button
+              className={page === item ? "active" : ""}
+              onClick={() => navigate(item)}
+              key={item}
+            >
+              {pageLabels[item]}
+            </button>
+          ))}
+        </div>
+        <div className="nav-actions">
+          <button className="sign-in">Sign in</button>
+          <Button onClick={() => navigate("contact")}>
+            Book a demo <Icon name="arrow" size={16} />
+          </Button>
+        </div>
+        <button
+          className="mobile-menu-button"
+          onClick={() => setOpen(!open)}
+          aria-label="Toggle menu"
+        >
+          <Icon name={open ? "close" : "menu"} />
+        </button>
+      </nav>
+      {open && (
+        <div className="mobile-menu">
+          {(["features", "solutions", "pricing", "about"] as Page[]).map((item) => (
+            <button
+              onClick={() => {
+                navigate(item);
+                setOpen(false);
+              }}
+              key={item}
+            >
+              {pageLabels[item]}
+            </button>
+          ))}
+          <button>Sign in</button>
+          <Button
+            onClick={() => {
+              navigate("contact");
+              setOpen(false);
+            }}
+          >
+            Book a demo
+          </Button>
+        </div>
+      )}
+    </header>
+  );
+}
+
+function SectionTitle({
+  eyebrow,
+  title,
+  copy,
+  align = "center",
+}: {
+  eyebrow: string;
+  title: string;
+  copy: string;
+  align?: "center" | "left";
+}) {
+  return (
+    <div className={`section-title section-title-${align}`}>
+      <span className="kicker">{eyebrow}</span>
+      <h2>{title}</h2>
+      <p>{copy}</p>
+    </div>
+  );
+}
+
+const patients = [
+  ["AM", "Ama Mensah", "Root canal", "09:00", "In treatment"],
+  ["KO", "Kofi Owusu", "Check-up", "10:30", "Waiting"],
+  ["ZN", "Zara Ndlovu", "Whitening", "12:00", "Confirmed"],
+  ["DC", "Daniel Cole", "Crown fitting", "14:15", "Confirmed"],
+];
+
+function MiniChart() {
+  return (
+    <div className="mini-chart" aria-label="Revenue chart">
+      <svg viewBox="0 0 500 120" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="chartFade" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#159c91" stopOpacity=".3" />
+            <stop offset="100%" stopColor="#159c91" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M0 103 C45 98,55 70,92 78 S145 106,180 77 S229 43,265 61 S318 90,355 48 S412 19,500 25 L500 120 L0 120Z"
+          fill="url(#chartFade)"
+        />
+        <path
+          d="M0 103 C45 98,55 70,92 78 S145 106,180 77 S229 43,265 61 S318 90,355 48 S412 19,500 25"
+          fill="none"
+          stroke="#159c91"
+          strokeWidth="3"
+        />
+      </svg>
+    </div>
+  );
+}
+
+function DashboardMockup({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className={`product-window dashboard-mockup ${compact ? "compact" : ""}`}>
+      <div className="window-top">
+        <div className="window-logo">
+          <Logo />
+        </div>
+        <div className="window-search">Search patients, appointments...</div>
+        <div className="avatar">AO</div>
+      </div>
+      <div className="window-body">
+        <aside className="product-sidebar">
+          {["chart", "calendar", "users", "tooth", "wallet", "flask", "report"].map((icon, i) => (
+            <span className={i === 0 ? "selected" : ""} key={icon}>
+              <Icon name={icon} size={17} />
+            </span>
+          ))}
+        </aside>
+        <div className="dashboard-main">
+          <div className="dash-heading">
+            <div>
+              <small>MONDAY, 24 JUNE</small>
+              <h3>Good morning, Dr. Amari</h3>
+            </div>
+            <button>+ New appointment</button>
+          </div>
+          <div className="stats-grid">
+            {[
+              ["users", "Total patients", "2,840", "+12.5%"],
+              ["calendar", "Appointments", "24", "Today"],
+              ["wallet", "Revenue", "$12,480", "+8.2%"],
+              ["clock", "Patient wait", "8 min", "-2 min"],
+            ].map(([icon, label, value, note]) => (
+              <div className="stat-card" key={label}>
+                <div className="stat-top">
+                  <span>
+                    <Icon name={icon} size={16} />
+                  </span>
+                  <em>{note}</em>
+                </div>
+                <strong>{value}</strong>
+                <small>{label}</small>
+              </div>
+            ))}
+          </div>
+          <div className="dashboard-grid">
+            <div className="dash-panel revenue-panel">
+              <div className="panel-heading">
+                <div>
+                  <small>NET REVENUE</small>
+                  <strong>$36,420.00</strong>
+                </div>
+                <select>
+                  <option>Last 6 months</option>
+                </select>
+              </div>
+              <MiniChart />
+              <div className="month-labels">
+                <span>Jan</span>
+                <span>Feb</span>
+                <span>Mar</span>
+                <span>Apr</span>
+                <span>May</span>
+                <span>Jun</span>
+              </div>
+            </div>
+            <div className="dash-panel schedule-panel">
+              <div className="panel-heading">
+                <strong>Today’s schedule</strong>
+                <span>View all</span>
+              </div>
+              {patients.slice(0, 3).map((p, i) => (
+                <div className="schedule-row" key={p[1]}>
+                  <span className={`patient-avatar av-${i}`}>{p[0]}</span>
+                  <div>
+                    <strong>{p[1]}</strong>
+                    <small>{p[2]}</small>
+                  </div>
+                  <time>{p[3]}</time>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ToothGrid() {
+  const teeth = Array.from({ length: 16 }, (_, i) => i + 1);
+  return (
+    <div className="tooth-chart">
+      <div className="tooth-row">
+        {teeth.map((n, i) => (
+          <div key={n}>
+            <span>{n}</span>
+            <svg viewBox="0 0 32 44">
+              <path
+                className={i === 4 || i === 10 ? "treated" : i === 7 ? "alert" : ""}
+                d="M16 3C10 3 5 6 5 13c0 6 4 8 5 15 1 7 2 12 5 12 4 0 2-12 5-12s1 12 5 12c3 0 4-5 5-12 1-7 5-9 5-15C31 6 26 3 20 3c-2 0-2 2-4 2s-2-2-4-2Z"
+              />
+            </svg>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function OdontogramMockup() {
+  return (
+    <div className="product-window clinical-window">
+      <div className="window-top">
+        <div className="window-logo">
+          <Logo />
+        </div>
+        <div className="window-search">Patient: Amina Sule</div>
+        <div className="avatar">AS</div>
+      </div>
+      <div className="clinical-content">
+        <div className="patient-strip">
+          <div className="large-avatar">AS</div>
+          <div>
+            <strong>Amina Sule</strong>
+            <span>DC-002498 · 34 years · Female</span>
+          </div>
+          <div className="patient-strip-actions">
+            <button>Medical history</button>
+            <button className="filled">+ Add treatment</button>
+          </div>
+        </div>
+        <div className="clinical-tabs">
+          <span>Overview</span>
+          <span className="active">Dental chart</span>
+          <span>Periodontal</span>
+          <span>X-rays</span>
+          <span>Lab results</span>
+          <span>Treatment plan</span>
+        </div>
+        <div className="chart-workspace">
+          <div className="tool-palette">
+            <strong>Charting tools</strong>
+            {["Healthy", "Caries", "Crown", "Missing", "Implant"].map((x, i) => (
+              <span key={x}>
+                <i className={`tool-dot tool-${i}`} />
+                {x}
+              </span>
+            ))}
+          </div>
+          <div className="teeth-area">
+            <div className="chart-title">
+              <div>
+                <strong>Adult dentition</strong>
+                <small>Updated 2 minutes ago</small>
+              </div>
+              <button>3D view</button>
+            </div>
+            <ToothGrid />
+            <ToothGrid />
+            <div className="clinical-note">
+              <span>
+                <Icon name="tooth" />
+              </span>
+              <div>
+                <strong>Tooth 14 · Occlusal caries</strong>
+                <small>Composite restoration recommended</small>
+              </div>
+              <button>Edit finding</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CalendarMockup() {
+  const hours = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00"];
+  return (
+    <div className="product-window calendar-window">
+      <div className="calendar-head">
+        <div>
+          <small>APPOINTMENTS</small>
+          <strong>June 24 – 28, 2025</strong>
+        </div>
+        <div>
+          <button>‹</button>
+          <button>Today</button>
+          <button>›</button>
+        </div>
+      </div>
+      <div className="calendar-grid">
+        <div className="time-column">
+          {hours.map((h) => (
+            <span key={h}>{h}</span>
+          ))}
+        </div>
+        {["Mon 24", "Tue 25", "Wed 26", "Thu 27", "Fri 28"].map((d, i) => (
+          <div className={`day-column day-${i}`} key={d}>
+            <strong>{d}</strong>
+            <div className="appointment a1">
+              <b>{patients[i % 4][3]}</b>
+              {patients[i % 4][1]}
+              <small>{patients[i % 4][2]}</small>
+            </div>
+            {i !== 3 && (
+              <div className="appointment a2">
+                <b>13:30</b>
+                {patients[(i + 1) % 4][1]}
+                <small>Consultation</small>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function BillingMockup() {
+  return (
+    <div className="product-window billing-window">
+      <div className="billing-head">
+        <div>
+          <small>FINANCE</small>
+          <h3>Invoices & payments</h3>
+        </div>
+        <button>+ Create invoice</button>
+      </div>
+      <div className="billing-stats">
+        <div>
+          <small>Total collected</small>
+          <strong>$48,290</strong>
+          <em>+12.4%</em>
+        </div>
+        <div>
+          <small>Outstanding</small>
+          <strong>$5,840</strong>
+          <em>14 invoices</em>
+        </div>
+        <div>
+          <small>Insurance claims</small>
+          <strong>$9,120</strong>
+          <em>8 pending</em>
+        </div>
+      </div>
+      <div className="invoice-table">
+        <div className="invoice-row invoice-header">
+          <span>Invoice</span>
+          <span>Patient</span>
+          <span>Date</span>
+          <span>Amount</span>
+          <span>Status</span>
+        </div>
+        {patients.map((p, i) => (
+          <div className="invoice-row" key={p[1]}>
+            <span>#INV-00{248 + i}</span>
+            <span>
+              <i className={`patient-avatar av-${i}`}>{p[0]}</i>
+              {p[1]}
+            </span>
+            <span>Jun {18 + i}, 2025</span>
+            <strong>${[420, 185, 1250, 680][i]}.00</strong>
+            <em className={i === 1 ? "pending" : ""}>{i === 1 ? "Pending" : "Paid"}</em>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Hero({ navigate }: { navigate: (page: Page) => void }) {
+  return (
+    <section className="hero">
+      <div className="hero-glow hero-glow-one" />
+      <div className="hero-glow hero-glow-two" />
+      <div className="container hero-content">
+        <Badge>DENTAL PRACTICE, REIMAGINED</Badge>
+        <h1>
+          Run Your Dental Practice.
+          <br />
+          <em>Not Your Paperwork.</em>
+        </h1>
+        <p>
+          Capture bookings from every social channel, let patients register themselves, and manage
+          clinical records, billing and reminders from one beautifully connected platform.
+        </p>
+        <div className="hero-actions">
+          <Button onClick={() => navigate("contact")}>
+            Start your 2-month free trial <Icon name="arrow" size={17} />
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() =>
+              document.getElementById("product")?.scrollIntoView({ behavior: "smooth" })
+            }
+          >
+            <span className="play">
+              <Icon name="play" size={14} />
+            </span>{" "}
+            See DentiChair in action
+          </Button>
+        </div>
+        <div className="hero-note">
+          <span>
+            <Icon name="check" size={14} /> No credit card
+          </span>
+          <span>
+            <Icon name="check" size={14} /> Setup support included
+          </span>
+          <span>
+            <Icon name="check" size={14} /> Cancel anytime
+          </span>
+        </div>
+        <div className="hero-product" id="product">
+          <div className="float-pill float-one">
+            <span>
+              <Icon name="check" size={15} />
+            </span>
+            <div>
+              <strong>Payment received</strong>
+              <small>$680.00 · Just now</small>
+            </div>
+          </div>
+          <div className="float-pill float-two">
+            <span>
+              <Icon name="calendar" size={16} />
+            </span>
+            <div>
+              <strong>24 appointments</strong>
+              <small>92% chair utilization</small>
+            </div>
+          </div>
+          <DashboardMockup />
+        </div>
+        <div className="trusted">
+          <span>TRUSTED BY MODERN DENTAL TEAMS ACROSS</span>
+          <div>
+            <b>ACCRA</b>
+            <b>NAIROBI</b>
+            <b>CAPE TOWN</b>
+            <b>LAGOS</b>
+            <b>LONDON</b>
+            <b>DUBAI</b>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const features = [
+  [
+    "users",
+    "Patient self-service",
+    "Patients book appointments, register themselves and securely submit their details before they arrive.",
+  ],
+  [
+    "calendar",
+    "Social appointment inbox",
+    "Receive appointment requests from all your social media channels directly inside DentiChair.",
+  ],
+  [
+    "mail",
+    "Automatic reminders",
+    "Reduce no-shows with timely SMS, email and in-app appointment reminders and notifications.",
+  ],
+  [
+    "tooth",
+    "Clinical records & HMIS",
+    "Complete HMIS-ready clinical records with medical history, notes, odontograms and periodontal charts.",
+  ],
+  [
+    "xray",
+    "X-rays & diagnostics",
+    "Upload, view and organize patient X-rays, scans and diagnostic images directly in the clinical record.",
+  ],
+  [
+    "wallet",
+    "Billing & payments",
+    "Simple invoices, insurance claims, payment plans and financial visibility.",
+  ],
+  [
+    "flask",
+    "Laboratory management",
+    "Request tests, receive lab results and track dental laboratory cases from impression to fitting.",
+  ],
+  [
+    "report",
+    "Easy, lossless migration",
+    "Move from Excel or another system without losing patient, appointment or financial data.",
+  ],
+];
+
+function TrustSection() {
+  return (
+    <section className="section">
+      <div className="container">
+        <SectionTitle
+          eyebrow="EVERYTHING IN ONE PLACE"
+          title="Save reception time from the very first booking."
+          copy="DentiChair captures enquiries, registrations and appointment details automatically, so your front desk can focus on patients instead of repetitive data entry."
+        />
+        <div className="benefits-grid">
+          {features.slice(0, 3).map(([icon, title, copy], i) => (
+            <article className="benefit-card" key={title}>
+              <span className={`feature-icon icon-${i}`}>
+                <Icon name={icon} />
+              </span>
+              <h3>{title}</h3>
+              <p>{copy}</p>
+              <a>
+                Explore feature <Icon name="arrow" size={15} />
+              </a>
+            </article>
+          ))}
+        </div>
+        <div className="proof-strip">
+          <div>
+            <strong>40%</strong>
+            <span>less time on admin</span>
+          </div>
+          <div>
+            <strong>2.4×</strong>
+            <span>faster patient check-in</span>
+          </div>
+          <div>
+            <strong>99.9%</strong>
+            <span>platform uptime</span>
+          </div>
+          <div>
+            <strong>4.9/5</strong>
+            <span>average team rating</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ClinicalShowcase() {
+  const [tab, setTab] = useState(0);
+  const tabs = [
+    [
+      "Advanced charting",
+      "See the complete clinical picture",
+      "Chart faster with an intuitive odontogram, detailed periodontal records and treatment planning that stays connected to the patient’s history.",
+    ],
+    [
+      "Patient records",
+      "One complete HMIS-ready clinical record.",
+      "Keep medical history, clinical notes, diagnoses, treatment, prescriptions and every patient interaction together in one secure timeline.",
+    ],
+    [
+      "Treatment plans",
+      "Turn recommendations into action",
+      "Build clear, visual treatment plans, explain options with confidence and track acceptance from one seamless workflow.",
+    ],
+    [
+      "X-rays & labs",
+      "Diagnostics, right where you need them.",
+      "View X-rays and scans beside the dental chart, receive laboratory results and keep every diagnostic file connected to the patient record.",
+    ],
+  ];
+  return (
+    <section className="section section-tint">
+      <div className="container">
+        <div className="feature-tabs">
+          {tabs.map((t, i) => (
+            <button className={tab === i ? "active" : ""} onClick={() => setTab(i)} key={t[0]}>
+              <span>0{i + 1}</span>
+              {t[0]}
+            </button>
+          ))}
+        </div>
+        <div className="showcase-copy">
+          <div>
+            <span className="kicker">CLINICAL INTELLIGENCE</span>
+            <h2>{tabs[tab][1]}</h2>
+            <p>{tabs[tab][2]}</p>
+          </div>
+          <a>
+            Explore clinical tools <Icon name="arrow" size={16} />
+          </a>
+        </div>
+        <div className="mockup-stage">
+          <OdontogramMockup />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SplitShowcase({
+  kind,
+  eyebrow,
+  title,
+  copy,
+  points,
+  reverse = false,
+}: {
+  kind: "calendar" | "billing" | "lab" | "offline";
+  eyebrow: string;
+  title: string;
+  copy: string;
+  points: string[];
+  reverse?: boolean;
+}) {
+  const visual =
+    kind === "calendar" ? (
+      <CalendarMockup />
+    ) : kind === "billing" ? (
+      <BillingMockup />
+    ) : kind === "lab" ? (
+      <LabMockup />
+    ) : (
+      <OfflineMockup />
+    );
+  return (
+    <section className={`split-section ${reverse ? "reverse" : ""}`}>
+      <div className="container split-grid">
+        <div className="split-copy">
+          <span className="kicker">{eyebrow}</span>
+          <h2>{title}</h2>
+          <p>{copy}</p>
+          <ul>
+            {points.map((p) => (
+              <li key={p}>
+                <span>
+                  <Icon name="check" size={14} />
+                </span>
+                {p}
+              </li>
+            ))}
+          </ul>
+          <a>
+            Discover more <Icon name="arrow" size={16} />
+          </a>
+        </div>
+        <div className="split-visual">{visual}</div>
+      </div>
+    </section>
+  );
+}
+
+function LabMockup() {
+  return (
+    <div className="product-window lab-window">
+      <div className="lab-head">
+        <div>
+          <small>LABORATORY</small>
+          <h3>Active lab orders</h3>
+        </div>
+        <button>+ New case</button>
+      </div>
+      <div className="kanban">
+        {["Sent to lab", "In production", "Ready for fitting"].map((col, i) => (
+          <div className="kanban-col" key={col}>
+            <div>
+              <strong>{col}</strong>
+              <span>{[3, 5, 2][i]}</span>
+            </div>
+            {patients.slice(i === 1 ? 0 : i, i === 1 ? 3 : i + 2).map((p, j) => (
+              <article key={p[1]}>
+                <small>CASE #{2048 + i * 4 + j}</small>
+                <strong>{p[1]}</strong>
+                <span>
+                  <Icon name="tooth" size={14} />{" "}
+                  {["Zirconia crown", "Night guard", "E-max veneer"][i]}
+                </span>
+                <footer>
+                  <i className={`patient-avatar av-${j}`}>{p[0]}</i>
+                  <time>{i === 2 ? "Today" : `${2 + j} days`}</time>
+                </footer>
+              </article>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function OfflineMockup() {
+  return (
+    <div className="offline-scene">
+      <div className="desktop-frame">
+        <div className="desktop-bar">
+          <span />
+          <span />
+          <span />
+          <small>DentiChair Desktop</small>
+        </div>
+        <DashboardMockup compact />
+      </div>
+      <div className="sync-card">
+        <span>
+          <Icon name="check" size={18} />
+        </span>
+        <div>
+          <strong>All changes synced</strong>
+          <small>Last synced just now</small>
+        </div>
+      </div>
+      <div className="offline-badge">
+        <Icon name="desktop" size={18} /> Works without internet
+      </div>
+    </div>
+  );
+}
+
+function HowItWorks({ navigate }: { navigate: (page: Page) => void }) {
+  return (
+    <section className="section how-section">
+      <div className="container">
+        <SectionTitle
+          eyebrow="SIMPLE FROM DAY ONE"
+          title="From setup to smoother days in three steps"
+          copy="Your onboarding specialist securely moves your data from Excel or any other system, configures your workflows and gets your team confident."
+        />
+        <div className="steps">
+          <div className="step-line" />
+          {[
+            [
+              "01",
+              "Tell us how you work",
+              "We learn your practice, team and goals—then tailor your workspace.",
+            ],
+            [
+              "02",
+              "Switch without losing data",
+              "We securely migrate and verify every record from Excel or your current system.",
+            ],
+            [
+              "03",
+              "Run a better practice",
+              "Go live with expert support whenever and wherever you need it.",
+            ],
+          ].map(([n, title, copy]) => (
+            <article key={n}>
+              <span>{n}</span>
+              <h3>{title}</h3>
+              <p>{copy}</p>
+            </article>
+          ))}
+        </div>
+        <div className="center-action">
+          <Button onClick={() => navigate("contact")}>
+            Plan your switch <Icon name="arrow" size={16} />
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const plans = [
+  {
+    name: "DentiChair Complete",
+    sub: "Everything your dental practice needs in one simple plan.",
+    monthly: 14,
+    popular: true,
+    features: [
+      "Two-month free trial",
+      "Patient self-booking & registration",
+      "Social media appointment inbox",
+      "Email & in-app reminders",
+      "HMIS-ready clinical records",
+      "X-rays, scans & diagnostic images",
+      "Invoices & payments",
+      "Lab requests, results & case tracking",
+      "Reports & analytics",
+      "Excel and system data migration",
+      "Desktop and offline access",
+    ],
+  },
+];
+
+function PricingCards({
+  navigate,
+  full = false,
+}: {
+  navigate: (page: Page) => void;
+  full?: boolean;
+}) {
+  return (
+    <div className={`pricing-block ${full ? "pricing-full" : ""}`}>
+      <div className="price-promise">
+        <span>
+          <Icon name="check" size={14} />
+        </span>
+        2 months free, then only $14 USD per month
+      </div>
+      <div className="pricing-grid pricing-grid-single">
+        {plans.map((plan) => (
+          <article className={`price-card ${plan.popular ? "popular" : ""}`} key={plan.name}>
+            {plan.popular && <div className="popular-label">MOST POPULAR</div>}
+            <h3>{plan.name}</h3>
+            <p>{plan.sub}</p>
+            <div className="price">
+              <sup>$</sup>
+              <strong>{plan.monthly}</strong>
+              <span>
+                / month
+                <br />
+                <small>per clinic</small>
+              </span>
+            </div>
+            <Button
+              variant={plan.popular ? "primary" : "secondary"}
+              onClick={() => navigate("contact")}
+            >
+              Start 2 months free <Icon name="arrow" size={16} />
+            </Button>
+            <div className="plan-divider" />
+            <small className="included">WHAT’S INCLUDED</small>
+            <ul>
+              {plan.features.map((f) => (
+                <li key={f}>
+                  <Icon name="check" size={15} />
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+      <p className="pricing-note">
+        Secure cloud backup, desktop access and assisted data migration are included. No setup fee,
+        no credit card and no long-term contract.
+      </p>
+    </div>
+  );
+}
+
+const faqs = [
+  [
+    "What can I store in a DentiChair clinical record?",
+    "Each secure HMIS-ready record can include medical and dental history, clinical notes, diagnoses, prescriptions, odontograms, periodontal charts, treatment plans, X-rays, scans, laboratory requests and results.",
+  ],
+  [
+    "Can I move my existing patient data to DentiChair?",
+    "Yes. Our onboarding team securely moves your data from Excel spreadsheets or virtually any other practice management system. We verify your patient, appointment and financial records with you before go-live so nothing is lost.",
+  ],
+  [
+    "Can patients book and register without calling reception?",
+    "Yes. Patients can choose an available appointment, register themselves and submit their details before they arrive. DentiChair captures everything directly in the system, saving your reception team from repetitive data entry.",
+  ],
+  [
+    "Can DentiChair collect appointments from social media?",
+    "Yes. Appointment requests from your connected social media channels flow into one DentiChair inbox, where your team can review and confirm them without switching between apps.",
+  ],
+  [
+    "How do appointment reminders work?",
+    "DentiChair automatically sends SMS and email reminders and keeps your team informed with in-app notifications, helping patients arrive on time and reducing missed appointments.",
+  ],
+  [
+    "Does DentiChair work if my internet goes down?",
+    "Yes. DentiChair Desktop keeps your essential clinical and appointment workflows available offline, then automatically syncs when your connection returns.",
+  ],
+  [
+    "Is patient information secure?",
+    "DentiChair uses encryption in transit and at rest, role-based permissions, audit logs and regular backups. We support data-protection requirements across the regions we serve.",
+  ],
+  [
+    "What happens after the two-month trial?",
+    "After your full two-month free trial, DentiChair is only $14 USD per month. There are no setup fees, no lock-in contract and no surprise charges.",
+  ],
+];
+
+function FAQ() {
+  const [open, setOpen] = useState(0);
+  return (
+    <section className="section faq-section">
+      <div className="container faq-grid">
+        <div>
+          <span className="kicker">QUESTIONS, ANSWERED</span>
+          <h2>Everything you need to know</h2>
+          <p>Can’t find the answer you’re looking for?</p>
+          <a href="mailto:hello@dentichair.com">
+            Talk to our team <Icon name="arrow" size={15} />
+          </a>
+        </div>
+        <div className="accordion">
+          {faqs.map(([q, a], i) => (
+            <article className={open === i ? "open" : ""} key={q}>
+              <button onClick={() => setOpen(open === i ? -1 : i)}>
+                <strong>{q}</strong>
+                <span>{open === i ? "−" : "+"}</span>
+              </button>
+              {open === i && <p>{a}</p>}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CTA({ navigate }: { navigate: (page: Page) => void }) {
+  return (
+    <section className="cta-section">
+      <div className="container">
+        <div className="cta-card">
+          <div className="cta-orbit orbit-one" />
+          <div className="cta-orbit orbit-two" />
+          <div className="cta-content">
+            <Badge>YOUR BEST PRACTICE STARTS HERE</Badge>
+            <h2>Make every chair count.</h2>
+            <p>
+              Join modern dental teams replacing busywork with better care. Try every DentiChair
+              feature free for two months, then continue for only $14 USD per month.
+            </p>
+            <div>
+              <Button variant="light" onClick={() => navigate("contact")}>
+                Book your free demo <Icon name="arrow" size={16} />
+              </Button>
+              <button className="text-button">Or start free today</button>
+            </div>
+          </div>
+          <div className="cta-teeth">
+            <div className="tooth-orb tooth-a">
+              <Icon name="tooth" size={46} />
+            </div>
+            <div className="tooth-orb tooth-b">
+              <Icon name="chart" size={34} />
+            </div>
+            <div className="tooth-orb tooth-c">
+              <Icon name="calendar" size={28} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Footer({ navigate }: { navigate: (page: Page) => void }) {
+  return (
+    <footer>
+      <div className="container footer-grid">
+        <div className="footer-brand">
+          <Logo light />
+          <p>
+            Elevating dental practice management,
+            <br />
+            one clinic at a time.
+          </p>
+          <div className="status">
+            <i /> All systems operational
+          </div>
+        </div>
+        <div>
+          <strong>Product</strong>
+          <button onClick={() => navigate("features")}>Features</button>
+          <button onClick={() => navigate("solutions")}>Solutions</button>
+          <button onClick={() => navigate("pricing")}>Pricing</button>
+          <button>Security</button>
+        </div>
+        <div>
+          <strong>Company</strong>
+          <button onClick={() => navigate("about")}>About us</button>
+          <button>Careers</button>
+          <button>Partners</button>
+          <button>Contact</button>
+        </div>
+        <div>
+          <strong>Resources</strong>
+          <button>Help centre</button>
+          <button>Guides</button>
+          <button>System status</button>
+          <button>Privacy</button>
+        </div>
+        <div className="newsletter">
+          <strong>Practice better, monthly.</strong>
+          <p>Product updates and smart practice insights.</p>
+          <div>
+            <input placeholder="Work email address" />
+            <button aria-label="Subscribe">
+              <Icon name="arrow" size={17} />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="container footer-bottom">
+        <span>© 2025 DentiChair Technologies. All rights reserved.</span>
+        <div>
+          <button>Terms</button>
+          <button>Privacy</button>
+          <button>Cookies</button>
+        </div>
+        <span>Built for dental teams everywhere.</span>
+      </div>
+    </footer>
+  );
+}
+
+function HomePage({ navigate }: { navigate: (page: Page) => void }) {
+  return (
+    <>
+      <Hero navigate={navigate} />
+      <TrustSection />
+      <ClinicalShowcase />
+      <SplitShowcase
+        kind="calendar"
+        eyebrow="APPOINTMENTS & QUEUE"
+        title="A calmer day starts with a smarter calendar."
+        copy="Bring every appointment into one calendar and let patients handle routine booking and registration themselves."
+        points={[
+          "Capture appointment requests from all social media channels",
+          "Let patients self-book, register and submit their details",
+          "Send automatic SMS, email and in-app reminders",
+        ]}
+      />
+      <SplitShowcase
+        kind="billing"
+        eyebrow="BILLING & FINANCE"
+        title="Know exactly how your practice is performing."
+        copy="From treatment estimates to final payments, make every financial conversation clear and every number easy to understand."
+        points={[
+          "Professional estimates and invoices in seconds",
+          "Track payments, claims and outstanding balances",
+          "Real-time revenue and collection insights",
+        ]}
+        reverse
+      />
+      <SplitShowcase
+        kind="lab"
+        eyebrow="LABORATORY MANAGEMENT"
+        title="Every lab case, exactly where it should be."
+        copy="Give your team a clear view of every external and in-house lab order—from impression to delivery."
+        points={[
+          "Visual case tracking and due dates",
+          "Store prescriptions, shades and attachments",
+          "Automatic status updates for your care team",
+        ]}
+      />
+      <SplitShowcase
+        kind="offline"
+        eyebrow="DENTICHAIR DESKTOP"
+        title="Your practice keeps moving—even when the internet doesn’t."
+        copy="Get the speed and resilience of a desktop application with the convenience of secure cloud sync."
+        points={[
+          "Reliable offline access to essential workflows",
+          "Automatic background sync when you reconnect",
+          "Optimized for Windows and macOS",
+        ]}
+        reverse
+      />
+      <HowItWorks navigate={navigate} />
+      <section className="section pricing-section">
+        <div className="container">
+          <SectionTitle
+            eyebrow="SIMPLE, TRANSPARENT PRICING"
+            title="Every feature. Just $14 a month."
+            copy="Use DentiChair free for two full months, then keep your complete practice system for only $14 USD per month."
+          />
+          <PricingCards navigate={navigate} />
+        </div>
+      </section>
+      <FAQ />
+      <CTA navigate={navigate} />
+    </>
+  );
+}
+
+function PageHero({ eyebrow, title, copy }: { eyebrow: string; title: string; copy: string }) {
+  return (
+    <section className="page-hero">
+      <div className="page-orb" />
+      <div className="container">
+        <Badge>{eyebrow}</Badge>
+        <h1>{title}</h1>
+        <p>{copy}</p>
+      </div>
+    </section>
+  );
+}
+
+function FeaturesPage({ navigate }: { navigate: (page: Page) => void }) {
+  return (
+    <>
+      <PageHero
+        eyebrow="ONE CONNECTED PLATFORM"
+        title="Everything your practice needs to thrive."
+        copy="Powerful clinical, operational and financial tools—designed to feel remarkably simple from the first click."
+      />
+      <section className="section">
+        <div className="container feature-page-grid">
+          {features.map(([icon, title, copy], i) => (
+            <article key={title}>
+              <span className={`feature-icon icon-${i % 3}`}>
+                <Icon name={icon} />
+              </span>
+              <h3>{title}</h3>
+              <p>{copy}</p>
+              <a>
+                Learn more <Icon name="arrow" size={15} />
+              </a>
+            </article>
+          ))}
+        </div>
+      </section>
+      <ClinicalShowcase />
+      <SplitShowcase
+        kind="calendar"
+        eyebrow="SMART SCHEDULING"
+        title="Turn a busy calendar into a smooth day."
+        copy="Bring social enquiries, online self-bookings, patient registrations and your team’s schedule into one clear view."
+        points={[
+          "Appointments captured from social media",
+          "Patient self-booking and registration",
+          "SMS, email and in-app notifications",
+        ]}
+      />
+      <SplitShowcase
+        kind="billing"
+        eyebrow="FINANCIAL CLARITY"
+        title="Understand every dollar, at a glance."
+        copy="Take control of estimates, invoices, claims and collections without switching between systems."
+        points={["Flexible payment options", "Daily reconciliation", "Export-ready reports"]}
+        reverse
+      />
+      <CTA navigate={navigate} />
+    </>
+  );
+}
+
+function SolutionsPage({ navigate }: { navigate: (page: Page) => void }) {
+  const solutions = [
+    [
+      "tooth",
+      "Independent practices",
+      "Professional tools without enterprise complexity. Spend less time managing software and more time growing patient relationships.",
+    ],
+    [
+      "users",
+      "Multi-chair clinics",
+      "Keep providers, reception and clinical teams aligned with workflows that scale as your clinic grows.",
+    ],
+    [
+      "globe",
+      "Dental groups",
+      "Standardize excellence across every location while giving each practice the flexibility to operate effectively.",
+    ],
+  ];
+  return (
+    <>
+      <PageHero
+        eyebrow="BUILT AROUND YOUR PRACTICE"
+        title="The right fit, at every stage of growth."
+        copy="Whether you run one chair or a network of clinics, DentiChair brings the visibility and control your team needs."
+      />
+      <section className="section">
+        <div className="container solution-grid">
+          {solutions.map(([icon, title, copy], i) => (
+            <article key={title}>
+              <div className={`solution-visual sv-${i}`}>
+                <Icon name={icon} size={58} />
+                <span>{i === 0 ? "01" : i === 1 ? "08" : "24"}</span>
+              </div>
+              <div>
+                <h3>{title}</h3>
+                <p>{copy}</p>
+                <ul>
+                  <li>
+                    <Icon name="check" size={14} /> Fast, guided setup
+                  </li>
+                  <li>
+                    <Icon name="check" size={14} /> Workflows that fit your team
+                  </li>
+                  <li>
+                    <Icon name="check" size={14} /> Support from real people
+                  </li>
+                </ul>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+      <section className="section section-tint">
+        <div className="container">
+          <SectionTitle
+            eyebrow="DESIGNED FOR REAL-WORLD DENTISTRY"
+            title="Global standards. Local understanding."
+            copy="Built for the realities of modern practices across Africa and beyond—from connectivity and currencies to multi-location growth."
+          />
+          <div className="global-card">
+            <div>
+              <span className="kicker">AVAILABLE EVERYWHERE</span>
+              <h3>
+                One platform.
+                <br />
+                Every location.
+              </h3>
+              <p>
+                Multi-currency billing, configurable tax, regional date formats and offline
+                reliability make DentiChair at home wherever you practice.
+              </p>
+            </div>
+            <div className="globe-visual">
+              <Icon name="globe" size={180} />
+              <i className="pin p1" />
+              <i className="pin p2" />
+              <i className="pin p3" />
+              <i className="pin p4" />
+            </div>
+          </div>
+        </div>
+      </section>
+      <CTA navigate={navigate} />
+    </>
+  );
+}
+
+function PricingPage({ navigate }: { navigate: (page: Page) => void }) {
+  return (
+    <>
+      <PageHero
+        eyebrow="PRICING WITHOUT SURPRISES"
+        title="Two months free. Then just $14 a month."
+        copy="One complete plan with every DentiChair feature. No setup fee, no hidden extras and no long-term contract."
+      />
+      <section className="section pricing-page-section">
+        <div className="container">
+          <PricingCards navigate={navigate} full />
+          <div className="guarantee">
+            <span>
+              <Icon name="shield" size={28} />
+            </span>
+            <div>
+              <strong>Two months, entirely on us.</strong>
+              <p>
+                Get expert onboarding, move every record from Excel or your current system and let
+                your whole team experience DentiChair. No data loss, no credit card and no
+                obligation.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <FAQ />
+      <CTA navigate={navigate} />
+    </>
+  );
+}
+
+function AboutPage({ navigate }: { navigate: (page: Page) => void }) {
+  return (
+    <>
+      <PageHero
+        eyebrow="OUR PURPOSE"
+        title="Better systems make room for better care."
+        copy="We’re building the modern operating system for dental teams—starting with the practices too often overlooked by global software."
+      />
+      <section className="section story-section">
+        <div className="container story-grid">
+          <div>
+            <span className="kicker">WHY DENTICHAIR</span>
+            <h2>Dental software should move at the speed of your team.</h2>
+          </div>
+          <div>
+            <p>
+              Too many dental teams still choose between outdated desktop systems and generic cloud
+              tools that ignore the realities of their day.
+            </p>
+            <p>
+              DentiChair was created to change that: world-class practice technology that is
+              resilient, intuitive and deeply connected—from front desk to treatment room to finance
+              office.
+            </p>
+            <p>
+              We partner closely with practicing dentists, nurses and administrators to make sure
+              every decision starts with real clinical work.
+            </p>
+          </div>
+        </div>
+        <div className="container values-grid">
+          {[
+            [
+              "spark",
+              "Care deeply",
+              "We build with empathy for the people delivering care and the people receiving it.",
+            ],
+            [
+              "chart",
+              "Raise the standard",
+              "We believe every practice deserves software that is secure, beautiful and capable.",
+            ],
+            [
+              "globe",
+              "Design for everywhere",
+              "We embrace different markets, workflows and realities from the very beginning.",
+            ],
+            [
+              "users",
+              "Win together",
+              "The best outcomes happen when customers, teams and partners work as one.",
+            ],
+          ].map(([icon, title, copy]) => (
+            <article key={title}>
+              <Icon name={icon} />
+              <h3>{title}</h3>
+              <p>{copy}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+      <section className="numbers-band">
+        <div className="container">
+          <div>
+            <strong>6</strong>
+            <span>countries and growing</span>
+          </div>
+          <div>
+            <strong>120k+</strong>
+            <span>patient records managed</span>
+          </div>
+          <div>
+            <strong>99.9%</strong>
+            <span>reliable platform uptime</span>
+          </div>
+          <div>
+            <strong>24/5</strong>
+            <span>human customer support</span>
+          </div>
+        </div>
+      </section>
+      <CTA navigate={navigate} />
+    </>
+  );
+}
+
+function ContactPage() {
+  const [submitted, setSubmitted] = useState(false);
+  const submit = (e: FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
+  return (
+    <section className="contact-page">
+      <div className="container contact-grid">
+        <div className="contact-copy">
+          <Badge>PERSONALIZED DEMO</Badge>
+          <h1>See what smoother practice management feels like.</h1>
+          <p>
+            Tell us a little about your practice. A DentiChair specialist will show you how the
+            platform fits your workflows and answer every question.
+          </p>
+          <div className="demo-points">
+            {[
+              ["calendar", "30-minute personalized walkthrough"],
+              ["users", "Tailored to your practice and team"],
+              ["desktop", "No pressure. Just helpful answers."],
+            ].map(([icon, text]) => (
+              <div key={text}>
+                <span>
+                  <Icon name={icon} />
+                </span>
+                <strong>{text}</strong>
+              </div>
+            ))}
+          </div>
+          <blockquote>
+            “DentiChair has transformed the rhythm of our clinic. Everyone knows what’s happening,
+            patients wait less, and I finally understand the business at a glance.”
+            <footer>
+              <span className="quote-avatar">NA</span>
+              <div>
+                <strong>Dr. Nana Agyeman</strong>
+                <small>Clinical Director, Pearl Dental</small>
+              </div>
+            </footer>
+          </blockquote>
+        </div>
+        <div className="form-card">
+          {submitted ? (
+            <div className="form-success">
+              <span>
+                <Icon name="check" size={28} />
+              </span>
+              <h2>Your demo is on its way.</h2>
+              <p>
+                Thanks for telling us about your practice. A DentiChair specialist will contact you
+                within one business day.
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={submit}>
+              <h2>Book your free demo</h2>
+              <p>We’ll be in touch within one business day.</p>
+              <div className="form-row">
+                <label>
+                  First name
+                  <input required placeholder="Amara" />
+                </label>
+                <label>
+                  Last name
+                  <input required placeholder="Okafor" />
+                </label>
+              </div>
+              <label>
+                Work email
+                <input required type="email" placeholder="amara@yourclinic.com" />
+              </label>
+              <label>
+                Phone number
+                <input required type="tel" placeholder="+234 000 000 0000" />
+              </label>
+              <div className="form-row">
+                <label>
+                  Practice name
+                  <input required placeholder="Your clinic" />
+                </label>
+                <label>
+                  Team size
+                  <select defaultValue="">
+                    <option value="" disabled>
+                      Select
+                    </option>
+                    <option>1–5</option>
+                    <option>6–15</option>
+                    <option>16–50</option>
+                    <option>50+</option>
+                  </select>
+                </label>
+              </div>
+              <label>
+                What would you most like to improve?
+                <select defaultValue="">
+                  <option value="" disabled>
+                    Choose an area
+                  </option>
+                  <option>Patient records</option>
+                  <option>HMIS, X-rays and laboratory records</option>
+                  <option>Appointments and queue</option>
+                  <option>Billing and reports</option>
+                  <option>Multi-location management</option>
+                  <option>All of the above</option>
+                </select>
+              </label>
+              <Button type="submit">
+                Request my demo <Icon name="arrow" size={17} />
+              </Button>
+              <small>
+                By submitting, you agree to our privacy policy. We’ll never share your details.
+              </small>
+            </form>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default function App() {
+  const getPage = (): Page => {
+    const hash = window.location.hash.replace("#/", "") as Page;
+    return hash in pageLabels ? hash : "home";
+  };
+  const [page, setPage] = useState<Page>(getPage);
+  useEffect(() => {
+    const update = () => {
+      setPage(getPage());
+      window.scrollTo({ top: 0, behavior: "instant" });
+    };
+    window.addEventListener("hashchange", update);
+    return () => window.removeEventListener("hashchange", update);
+  }, []);
+  const navigate = (next: Page) => {
+    if (next === page) window.scrollTo({ top: 0, behavior: "smooth" });
+    else window.location.hash = `/${next}`;
+  };
+  return (
+    <div className="app">
+      <Navbar page={page} navigate={navigate} />
+      <main>
+        {page === "home" && <HomePage navigate={navigate} />}
+        {page === "features" && <FeaturesPage navigate={navigate} />}
+        {page === "solutions" && <SolutionsPage navigate={navigate} />}
+        {page === "pricing" && <PricingPage navigate={navigate} />}
+        {page === "about" && <AboutPage navigate={navigate} />}
+        {page === "contact" && <ContactPage />}
+      </main>
+      <Footer navigate={navigate} />
+    </div>
+  );
+}
