@@ -338,15 +338,15 @@ function Hero({ navigate }: { navigate: (page: Page) => void }) {
       <div className="hero-glow hero-glow-one" />
       <div className="hero-glow hero-glow-two" />
       <div className="container hero-content">
-        <Badge>DENTAL PRACTICE, REIMAGINED</Badge>
+        <Badge>DENTICHAIR DESKTOP · WINDOWS & MACOS</Badge>
         <h1>
-          Run Your Dental Practice.
+          The practice app that
           <br />
-          <em>Not Your Paperwork.</em>
+          <em>never stops working.</em>
         </h1>
         <p>
-          Capture bookings from every social channel, let patients register themselves, and manage
-          clinical records, billing and reminders from one beautifully connected platform.
+          DentiChair Desktop runs patients, appointments, charting, billing and labs at full speed on
+          your own computers, then syncs securely to the cloud the moment you’re back online.
         </p>
         <div className="hero-actions">
           <Button onClick={() => navigate("contact")}>
@@ -381,8 +381,8 @@ function Hero({ navigate }: { navigate: (page: Page) => void }) {
               <Icon name="check" size={15} />
             </span>
             <div>
-              <strong>Payment received</strong>
-              <small>$680.00 · Just now</small>
+              <strong>Saved offline</strong>
+              <small>Syncs automatically when online</small>
             </div>
           </div>
           <div className="float-pill float-two">
@@ -391,14 +391,23 @@ function Hero({ navigate }: { navigate: (page: Page) => void }) {
             </span>
             <div>
               <strong>24 appointments</strong>
-              <small>92% chair utilization</small>
+              <small>Today, at Downtown Clinic</small>
             </div>
           </div>
-          <Shot
-            src="/images/dashboard.png"
-            alt="DentiChair dashboard showing revenue, active patients, appointments and today's upcoming schedule"
-            className="shot-hero"
-          />
+          <div className="desktop-frame hero-desktop">
+            <div className="desktop-bar">
+              <span />
+              <span />
+              <span />
+              <small>DentiChair Desktop</small>
+            </div>
+            <img
+              className="desktop-shot"
+              src="/images/dashboard.png"
+              alt="DentiChair Desktop dashboard showing revenue, active patients, appointments and today’s upcoming schedule"
+              decoding="async"
+            />
+          </div>
         </div>
         <div className="trusted">
           <span>TRUSTED BY MODERN DENTAL TEAMS ACROSS</span>
@@ -459,26 +468,23 @@ const features = [
   ],
 ];
 
-function TrustSection() {
+function FeatureGrid() {
   return (
     <section className="section">
       <div className="container">
         <SectionTitle
-          eyebrow="EVERYTHING IN ONE PLACE"
-          title="Save reception time from the very first booking."
-          copy="DentiChair captures enquiries, registrations and appointment details automatically, so your front desk can focus on patients instead of repetitive data entry."
+          eyebrow="EVERYTHING ON YOUR DESKTOP"
+          title="One desktop app for the whole practice."
+          copy="From the front desk to the treatment room to the finance office, DentiChair brings every workflow into one fast, dependable application."
         />
-        <div className="benefits-grid">
-          {features.slice(0, 3).map(([icon, title, copy], i) => (
-            <article className="benefit-card" key={title}>
-              <span className={`feature-icon icon-${i}`}>
+        <div className="feature-page-grid">
+          {features.map(([icon, title, copy], i) => (
+            <article key={title}>
+              <span className={`feature-icon icon-${i % 3}`}>
                 <Icon name={icon} />
               </span>
               <h3>{title}</h3>
               <p>{copy}</p>
-              <a>
-                Explore feature <Icon name="arrow" size={15} />
-              </a>
             </article>
           ))}
         </div>
@@ -936,7 +942,7 @@ function Footer({ navigate }: { navigate: (page: Page) => void }) {
         </div>
       </div>
       <div className="container footer-bottom">
-        <span>© 2025 DentiChair Technologies. All rights reserved.</span>
+        <span>© 2026 DentiChair Technologies. All rights reserved.</span>
         <div>
           <button>Terms</button>
           <button>Privacy</button>
@@ -952,7 +958,18 @@ function HomePage({ navigate }: { navigate: (page: Page) => void }) {
   return (
     <>
       <Hero navigate={navigate} />
-      <TrustSection />
+      <FeatureGrid />
+      <SplitShowcase
+        kind="offline"
+        eyebrow="DENTICHAIR DESKTOP"
+        title="Your practice keeps moving—even when the internet doesn’t."
+        copy="Get the speed and resilience of a desktop application with the convenience of secure cloud sync."
+        points={[
+          "Reliable offline access to essential workflows",
+          "Automatic background sync when you reconnect",
+          "Optimized for Windows and macOS",
+        ]}
+      />
       <ClinicalShowcase />
       <SplitShowcase
         kind="calendar"
@@ -964,6 +981,7 @@ function HomePage({ navigate }: { navigate: (page: Page) => void }) {
           "Let patients self-book, register and submit their details",
           "Send automatic SMS, email and in-app reminders",
         ]}
+        reverse
       />
       <SplitShowcase
         kind="billing"
@@ -975,7 +993,6 @@ function HomePage({ navigate }: { navigate: (page: Page) => void }) {
           "Track payments, claims and outstanding balances",
           "Real-time revenue and collection insights",
         ]}
-        reverse
       />
       <SplitShowcase
         kind="lab"
@@ -987,17 +1004,6 @@ function HomePage({ navigate }: { navigate: (page: Page) => void }) {
           "Store prescriptions, shades and attachments",
           "Automatic status updates for your care team",
         ]}
-      />
-      <SplitShowcase
-        kind="offline"
-        eyebrow="DENTICHAIR DESKTOP"
-        title="Your practice keeps moving—even when the internet doesn’t."
-        copy="Get the speed and resilience of a desktop application with the convenience of secure cloud sync."
-        points={[
-          "Reliable offline access to essential workflows",
-          "Automatic background sync when you reconnect",
-          "Optimized for Windows and macOS",
-        ]}
         reverse
       />
       <HowItWorks navigate={navigate} />
@@ -1006,7 +1012,7 @@ function HomePage({ navigate }: { navigate: (page: Page) => void }) {
           <SectionTitle
             eyebrow="SIMPLE, TRANSPARENT PRICING"
             title="Every feature. Just $14 a month."
-            copy="Use DentiChair free for two full months, then keep your complete practice system for only $14 USD per month."
+            copy="Use DentiChair Desktop free for two full months, then keep your complete practice system for only $14 USD per month."
           />
           <PricingCards navigate={navigate} />
         </div>
