@@ -757,8 +757,6 @@ function PricingCards({
             <h3>{plan.name}</h3>
             <p>{plan.sub}</p>
             <div className="price">
-              <sup>$</sup>
-              <strong>{plan.monthly}</strong>
               <span>
                 / month
                 <br />
