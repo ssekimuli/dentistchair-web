@@ -2745,3 +2745,58 @@ footer {
     padding: 25px;
   }
 }
+
+/* Product screenshots (real DentiChair app captures) */
+.shot {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #cadae0;
+  border-radius: 16px;
+  background: #0b1620;
+  box-shadow: 0 25px 60px rgba(19, 61, 69, 0.13);
+}
+.shot img,
+.desktop-shot {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.shot-split {
+  transform: perspective(1200px) rotateY(-2deg);
+}
+.reverse .shot-split {
+  transform: perspective(1200px) rotateY(2deg);
+}
+.mockup-stage-shot {
+  padding: 34px;
+}
+.mockup-stage-shot .shot {
+  box-shadow: 0 25px 60px rgba(19, 61, 69, 0.18);
+}
+
+@media (max-width: 900px) {
+  .shot-split,
+  .reverse .shot-split {
+    transform: none;
+  }
+  .mockup-stage-shot {
+    padding: 12px;
+  }
+  .offline-scene {
+    width: auto;
+    transform: none;
+    margin-bottom: 0;
+  }
+  .desktop-frame {
+    transform: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .sync-card {
+    right: 10px;
+  }
+  .offline-badge {
+    left: 10px;
+  }
+}

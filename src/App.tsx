@@ -273,204 +273,18 @@ const patients = [
   ["DC", "Daniel Cole", "Crown fitting", "14:15", "Confirmed"],
 ];
 
-function MiniChart() {
+function Shot({
+  src,
+  alt,
+  className = "",
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+}) {
   return (
-    <div className="mini-chart" aria-label="Revenue chart">
-      <svg viewBox="0 0 500 120" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="chartFade" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#159c91" stopOpacity=".3" />
-            <stop offset="100%" stopColor="#159c91" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M0 103 C45 98,55 70,92 78 S145 106,180 77 S229 43,265 61 S318 90,355 48 S412 19,500 25 L500 120 L0 120Z"
-          fill="url(#chartFade)"
-        />
-        <path
-          d="M0 103 C45 98,55 70,92 78 S145 106,180 77 S229 43,265 61 S318 90,355 48 S412 19,500 25"
-          fill="none"
-          stroke="#159c91"
-          strokeWidth="3"
-        />
-      </svg>
-    </div>
-  );
-}
-
-function DashboardMockup({ compact = false }: { compact?: boolean }) {
-  return (
-    <div className={`product-window dashboard-mockup ${compact ? "compact" : ""}`}>
-      <div className="window-top">
-        <div className="window-logo">
-          <Logo />
-        </div>
-        <div className="window-search">Search patients, appointments...</div>
-        <div className="avatar">AO</div>
-      </div>
-      <div className="window-body">
-        <aside className="product-sidebar">
-          {["chart", "calendar", "users", "tooth", "wallet", "flask", "report"].map((icon, i) => (
-            <span className={i === 0 ? "selected" : ""} key={icon}>
-              <Icon name={icon} size={17} />
-            </span>
-          ))}
-        </aside>
-        <div className="dashboard-main">
-          <div className="dash-heading">
-            <div>
-              <small>MONDAY, 24 JUNE</small>
-              <h3>Good morning, Dr. Amari</h3>
-            </div>
-            <button>+ New appointment</button>
-          </div>
-          <div className="stats-grid">
-            {[
-              ["users", "Total patients", "2,840", "+12.5%"],
-              ["calendar", "Appointments", "24", "Today"],
-              ["wallet", "Revenue", "$12,480", "+8.2%"],
-              ["clock", "Patient wait", "8 min", "-2 min"],
-            ].map(([icon, label, value, note]) => (
-              <div className="stat-card" key={label}>
-                <div className="stat-top">
-                  <span>
-                    <Icon name={icon} size={16} />
-                  </span>
-                  <em>{note}</em>
-                </div>
-                <strong>{value}</strong>
-                <small>{label}</small>
-              </div>
-            ))}
-          </div>
-          <div className="dashboard-grid">
-            <div className="dash-panel revenue-panel">
-              <div className="panel-heading">
-                <div>
-                  <small>NET REVENUE</small>
-                  <strong>$36,420.00</strong>
-                </div>
-                <select>
-                  <option>Last 6 months</option>
-                </select>
-              </div>
-              <MiniChart />
-              <div className="month-labels">
-                <span>Jan</span>
-                <span>Feb</span>
-                <span>Mar</span>
-                <span>Apr</span>
-                <span>May</span>
-                <span>Jun</span>
-              </div>
-            </div>
-            <div className="dash-panel schedule-panel">
-              <div className="panel-heading">
-                <strong>Today’s schedule</strong>
-                <span>View all</span>
-              </div>
-              {patients.slice(0, 3).map((p, i) => (
-                <div className="schedule-row" key={p[1]}>
-                  <span className={`patient-avatar av-${i}`}>{p[0]}</span>
-                  <div>
-                    <strong>{p[1]}</strong>
-                    <small>{p[2]}</small>
-                  </div>
-                  <time>{p[3]}</time>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ToothGrid() {
-  const teeth = Array.from({ length: 16 }, (_, i) => i + 1);
-  return (
-    <div className="tooth-chart">
-      <div className="tooth-row">
-        {teeth.map((n, i) => (
-          <div key={n}>
-            <span>{n}</span>
-            <svg viewBox="0 0 32 44">
-              <path
-                className={i === 4 || i === 10 ? "treated" : i === 7 ? "alert" : ""}
-                d="M16 3C10 3 5 6 5 13c0 6 4 8 5 15 1 7 2 12 5 12 4 0 2-12 5-12s1 12 5 12c3 0 4-5 5-12 1-7 5-9 5-15C31 6 26 3 20 3c-2 0-2 2-4 2s-2-2-4-2Z"
-              />
-            </svg>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function OdontogramMockup() {
-  return (
-    <div className="product-window clinical-window">
-      <div className="window-top">
-        <div className="window-logo">
-          <Logo />
-        </div>
-        <div className="window-search">Patient: Amina Sule</div>
-        <div className="avatar">AS</div>
-      </div>
-      <div className="clinical-content">
-        <div className="patient-strip">
-          <div className="large-avatar">AS</div>
-          <div>
-            <strong>Amina Sule</strong>
-            <span>DC-002498 · 34 years · Female</span>
-          </div>
-          <div className="patient-strip-actions">
-            <button>Medical history</button>
-            <button className="filled">+ Add treatment</button>
-          </div>
-        </div>
-        <div className="clinical-tabs">
-          <span>Overview</span>
-          <span className="active">Dental chart</span>
-          <span>Periodontal</span>
-          <span>X-rays</span>
-          <span>Lab results</span>
-          <span>Treatment plan</span>
-        </div>
-        <div className="chart-workspace">
-          <div className="tool-palette">
-            <strong>Charting tools</strong>
-            {["Healthy", "Caries", "Crown", "Missing", "Implant"].map((x, i) => (
-              <span key={x}>
-                <i className={`tool-dot tool-${i}`} />
-                {x}
-              </span>
-            ))}
-          </div>
-          <div className="teeth-area">
-            <div className="chart-title">
-              <div>
-                <strong>Adult dentition</strong>
-                <small>Updated 2 minutes ago</small>
-              </div>
-              <button>3D view</button>
-            </div>
-            <ToothGrid />
-            <ToothGrid />
-            <div className="clinical-note">
-              <span>
-                <Icon name="tooth" />
-              </span>
-              <div>
-                <strong>Tooth 14 · Occlusal caries</strong>
-                <small>Composite restoration recommended</small>
-              </div>
-              <button>Edit finding</button>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className={`shot ${className}`}>
+      <img src={src} alt={alt} loading="lazy" decoding="async" />
     </div>
   );
 }
@@ -511,58 +325,6 @@ function CalendarMockup() {
                 <small>Consultation</small>
               </div>
             )}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function BillingMockup() {
-  return (
-    <div className="product-window billing-window">
-      <div className="billing-head">
-        <div>
-          <small>FINANCE</small>
-          <h3>Invoices & payments</h3>
-        </div>
-        <button>+ Create invoice</button>
-      </div>
-      <div className="billing-stats">
-        <div>
-          <small>Total collected</small>
-          <strong>$48,290</strong>
-          <em>+12.4%</em>
-        </div>
-        <div>
-          <small>Outstanding</small>
-          <strong>$5,840</strong>
-          <em>14 invoices</em>
-        </div>
-        <div>
-          <small>Insurance claims</small>
-          <strong>$9,120</strong>
-          <em>8 pending</em>
-        </div>
-      </div>
-      <div className="invoice-table">
-        <div className="invoice-row invoice-header">
-          <span>Invoice</span>
-          <span>Patient</span>
-          <span>Date</span>
-          <span>Amount</span>
-          <span>Status</span>
-        </div>
-        {patients.map((p, i) => (
-          <div className="invoice-row" key={p[1]}>
-            <span>#INV-00{248 + i}</span>
-            <span>
-              <i className={`patient-avatar av-${i}`}>{p[0]}</i>
-              {p[1]}
-            </span>
-            <span>Jun {18 + i}, 2025</span>
-            <strong>${[420, 185, 1250, 680][i]}.00</strong>
-            <em className={i === 1 ? "pending" : ""}>{i === 1 ? "Pending" : "Paid"}</em>
           </div>
         ))}
       </div>
@@ -632,7 +394,11 @@ function Hero({ navigate }: { navigate: (page: Page) => void }) {
               <small>92% chair utilization</small>
             </div>
           </div>
-          <DashboardMockup />
+          <Shot
+            src="/images/dashboard.png"
+            alt="DentiChair dashboard showing revenue, active patients, appointments and today's upcoming schedule"
+            className="shot-hero"
+          />
         </div>
         <div className="trusted">
           <span>TRUSTED BY MODERN DENTAL TEAMS ACROSS</span>
@@ -784,8 +550,18 @@ function ClinicalShowcase() {
             Explore clinical tools <Icon name="arrow" size={16} />
           </a>
         </div>
-        <div className="mockup-stage">
-          <OdontogramMockup />
+        <div className="mockup-stage mockup-stage-shot">
+          {tab === 3 ? (
+            <Shot
+              src="/images/xray-requests.png"
+              alt="Radiology and X-ray requests list with patient, examination, diagnostic centre, fee and status"
+            />
+          ) : (
+            <Shot
+              src="/images/odontogram.png"
+              alt="Odontogram showing tooth-by-tooth charting with status legend and live metrics"
+            />
+          )}
         </div>
       </div>
     </section>
@@ -811,9 +587,17 @@ function SplitShowcase({
     kind === "calendar" ? (
       <CalendarMockup />
     ) : kind === "billing" ? (
-      <BillingMockup />
+      <Shot
+        src="/images/invoices.png"
+        alt="Billing screen listing invoices with patient, issue date, total bill, paid amount and balance"
+        className="shot-split"
+      />
     ) : kind === "lab" ? (
-      <LabMockup />
+      <Shot
+        src="/images/laboratory.png"
+        alt="Laboratory screen with lab orders, status, doctor and item details"
+        className="shot-split"
+      />
     ) : (
       <OfflineMockup />
     );
@@ -844,44 +628,6 @@ function SplitShowcase({
   );
 }
 
-function LabMockup() {
-  return (
-    <div className="product-window lab-window">
-      <div className="lab-head">
-        <div>
-          <small>LABORATORY</small>
-          <h3>Active lab orders</h3>
-        </div>
-        <button>+ New case</button>
-      </div>
-      <div className="kanban">
-        {["Sent to lab", "In production", "Ready for fitting"].map((col, i) => (
-          <div className="kanban-col" key={col}>
-            <div>
-              <strong>{col}</strong>
-              <span>{[3, 5, 2][i]}</span>
-            </div>
-            {patients.slice(i === 1 ? 0 : i, i === 1 ? 3 : i + 2).map((p, j) => (
-              <article key={p[1]}>
-                <small>CASE #{2048 + i * 4 + j}</small>
-                <strong>{p[1]}</strong>
-                <span>
-                  <Icon name="tooth" size={14} />{" "}
-                  {["Zirconia crown", "Night guard", "E-max veneer"][i]}
-                </span>
-                <footer>
-                  <i className={`patient-avatar av-${j}`}>{p[0]}</i>
-                  <time>{i === 2 ? "Today" : `${2 + j} days`}</time>
-                </footer>
-              </article>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 function OfflineMockup() {
   return (
     <div className="offline-scene">
@@ -892,7 +638,13 @@ function OfflineMockup() {
           <span />
           <small>DentiChair Desktop</small>
         </div>
-        <DashboardMockup compact />
+        <img
+          className="desktop-shot"
+          src="/images/offline-settings.png"
+          alt="DentiChair Desktop settings showing Online Cloud Mode with synced status and an empty sync queue"
+          loading="lazy"
+          decoding="async"
+        />
       </div>
       <div className="sync-card">
         <span>
