@@ -1,0 +1,2 @@
+# Served as plain files; the hosting build does not hydrate Git LFS pointers.
+*.png -filter -diff -merge -text
