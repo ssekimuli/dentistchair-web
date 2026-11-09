@@ -2800,3 +2800,38 @@ footer {
     left: 10px;
   }
 }
+
+/* Contact email links */
+.contact-emails {
+  display: grid;
+  gap: 10px;
+  margin-top: 28px;
+}
+.contact-emails a {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+.contact-emails small {
+  width: 70px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+.footer-mails {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+}
+.footer-mails a {
+  color: inherit;
+  font-size: 14px;
+  opacity: 0.8;
+  text-decoration: none;
+}
+.footer-mails a:hover {
+  opacity: 1;
+}

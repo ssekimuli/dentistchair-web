@@ -826,7 +826,7 @@ function FAQ() {
           <span className="kicker">QUESTIONS, ANSWERED</span>
           <h2>Everything you need to know</h2>
           <p>Can’t find the answer you’re looking for?</p>
-          <a href="mailto:hello@dentichair.com">
+          <a href="mailto:sales@dentichair.com">
             Talk to our team <Icon name="arrow" size={15} />
           </a>
         </div>
@@ -897,6 +897,11 @@ function Footer({ navigate }: { navigate: (page: Page) => void }) {
           </p>
           <div className="status">
             <i /> All systems operational
+          </div>
+          <div className="footer-mails">
+            <a href="mailto:info@dentichair.com">info@dentichair.com</a>
+            <a href="mailto:sales@dentichair.com">sales@dentichair.com</a>
+            <a href="mailto:support@dentichair.com">support@dentichair.com</a>
           </div>
         </div>
         <div>
@@ -1309,6 +1314,17 @@ function ContactPage() {
                 <strong>{text}</strong>
               </div>
             ))}
+          </div>
+          <div className="contact-emails">
+            <a href="mailto:sales@dentichair.com">
+              <small>Sales</small> sales@dentichair.com
+            </a>
+            <a href="mailto:support@dentichair.com">
+              <small>Support</small> support@dentichair.com
+            </a>
+            <a href="mailto:info@dentichair.com">
+              <small>General</small> info@dentichair.com
+            </a>
           </div>
           <blockquote>
             “DentiChair has transformed the rhythm of our clinic. Everyone knows what’s happening,
