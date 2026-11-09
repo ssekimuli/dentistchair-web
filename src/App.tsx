@@ -717,7 +717,6 @@ const plans = [
   {
     name: "DentiChair Complete",
     sub: "Everything your dental practice needs in one simple plan.",
-    monthly: 14,
     popular: true,
     features: [
       "Two-month free trial",
@@ -748,7 +747,7 @@ function PricingCards({
         <span>
           <Icon name="check" size={14} />
         </span>
-        2 months free, then only $14 USD per month
+        Two months free, then a plan priced for your clinic
       </div>
       <div className="pricing-grid pricing-grid-single">
         {plans.map((plan) => (
@@ -756,13 +755,6 @@ function PricingCards({
             {plan.popular && <div className="popular-label">MOST POPULAR</div>}
             <h3>{plan.name}</h3>
             <p>{plan.sub}</p>
-            <div className="price">
-              <span>
-                / month
-                <br />
-                <small>per clinic</small>
-              </span>
-            </div>
             <Button
               variant={plan.popular ? "primary" : "secondary"}
               onClick={() => navigate("contact")}
@@ -821,7 +813,7 @@ const faqs = [
   ],
   [
     "What happens after the two-month trial?",
-    "After your full two-month free trial, DentiChair is only $14 USD per month. There are no setup fees, no lock-in contract and no surprise charges.",
+    "After your full two-month free trial, your clinic continues on a plan priced for your practice. There are no setup fees, no lock-in contract and no surprise charges.",
   ],
 ];
 
@@ -866,7 +858,7 @@ function CTA({ navigate }: { navigate: (page: Page) => void }) {
             <h2>Make every chair count.</h2>
             <p>
               Join modern dental teams replacing busywork with better care. Try every DentiChair
-              feature free for two months, then continue for only $14 USD per month.
+              feature free for two months, then continue with a plan priced for your clinic.
             </p>
             <div>
               <Button variant="light" onClick={() => navigate("contact")}>
@@ -1009,8 +1001,8 @@ function HomePage({ navigate }: { navigate: (page: Page) => void }) {
         <div className="container">
           <SectionTitle
             eyebrow="SIMPLE, TRANSPARENT PRICING"
-            title="Every feature. Just $14 a month."
-            copy="Use DentiChair Desktop free for two full months, then keep your complete practice system for only $14 USD per month."
+            title="Every feature. One plan for your clinic."
+            copy="Use DentiChair Desktop free for two full months, then keep your complete practice system on a plan priced for your clinic."
           />
           <PricingCards navigate={navigate} />
         </div>
@@ -1175,7 +1167,7 @@ function PricingPage({ navigate }: { navigate: (page: Page) => void }) {
     <>
       <PageHero
         eyebrow="PRICING WITHOUT SURPRISES"
-        title="Two months free. Then just $14 a month."
+        title="Two months free. Then a plan priced for your clinic."
         copy="One complete plan with every DentiChair feature. No setup fee, no hidden extras and no long-term contract."
       />
       <section className="section pricing-page-section">
