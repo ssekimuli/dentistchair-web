@@ -144,9 +144,7 @@ function Icon({
 function Logo({ light = false }: { light?: boolean }) {
   return (
     <div className={`logo ${light ? "logo-light" : ""}`}>
-      <span className="logo-mark">
-        <span className="logo-cut" />
-      </span>
+      <img className="logo-img" src="/images/logo.png" alt="" aria-hidden="true" />
       <span>DentiChair</span>
     </div>
   );
