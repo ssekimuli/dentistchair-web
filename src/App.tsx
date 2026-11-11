@@ -1,4 +1,5 @@
 import { FormEvent, ReactNode, useEffect, useState } from "react";
+import { joinWaitingList, WaitingListResult } from "./waitingList";
 
 type Page = "home" | "features" | "solutions" | "pricing" | "about" | "contact";
 
@@ -1283,6 +1284,81 @@ function AboutPage({ navigate }: { navigate: (page: Page) => void }) {
   );
 }
 
+function WaitingListForm() {
+  const [submitting, setSubmitting] = useState(false);
+  const [result, setResult] = useState<WaitingListResult | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
+
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
+    const value = (name: string) => String(form.get(name) ?? "").trim();
+    setSubmitting(true);
+    setResult(null);
+    setFieldErrors({});
+    const res = await joinWaitingList({
+      client_email: value("client_email"),
+      phone: value("phone"),
+      location: value("location") || undefined,
+      branch: value("branch") || undefined,
+    });
+    setSubmitting(false);
+    setResult(res);
+    if (!res.ok && res.fieldErrors) setFieldErrors(res.fieldErrors);
+  };
+
+  if (result?.ok) {
+    return (
+      <div className="form-success">
+        <span>
+          <Icon name="check" size={28} />
+        </span>
+        <h2>You’re on the waiting list.</h2>
+        <p>{result.message}</p>
+      </div>
+    );
+  }
+
+  const errorFor = (field: string) => fieldErrors[field]?.[0];
+
+  return (
+    <form onSubmit={submit} noValidate>
+      <h2>Join the waiting list</h2>
+      <p>Tell us where you are and we’ll contact you when a spot opens.</p>
+      <label>
+        Email address
+        <input required type="email" name="client_email" placeholder="jane@example.com" />
+        {errorFor("client_email") && <small role="alert">{errorFor("client_email")}</small>}
+      </label>
+      <label>
+        Phone number
+        <input required type="tel" name="phone" placeholder="+256 712 345 678" />
+        {errorFor("phone") && <small role="alert">{errorFor("phone")}</small>}
+      </label>
+      <div className="form-row">
+        <label>
+          Location
+          <input name="location" placeholder="Kampala" />
+          {errorFor("location") && <small role="alert">{errorFor("location")}</small>}
+        </label>
+        <label>
+          Branch
+          <input name="branch" placeholder="Kololo" />
+          {errorFor("branch") && <small role="alert">{errorFor("branch")}</small>}
+        </label>
+      </div>
+      {result && !result.ok && (
+        <p role="alert" className="form-error">
+          {result.message}
+        </p>
+      )}
+      <Button type="submit">
+        {submitting ? "Joining…" : "Join the waiting list"} <Icon name="arrow" size={17} />
+      </Button>
+    </form>
+  );
+}
+
 function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const submit = (e: FormEvent) => {
@@ -1410,6 +1486,11 @@ function ContactPage() {
               </small>
             </form>
           )}
+        </div>
+      </div>
+      <div className="container waiting-list">
+        <div className="form-card">
+          <WaitingListForm />
         </div>
       </div>
     </section>
