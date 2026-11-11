@@ -1,7 +1,7 @@
 {
   "description": "Dental practice management software for clinics to organize patients, appointments, charting, billing, labs, and analytics in one streamlined platform.",
   "robots": {
-    "index": false
+    "index": true
   },
   "accessibility": {
     "addBypassLinks": false,

@@ -5,6 +5,8 @@ import fs from "node:fs";
 import path from "node:path";
 
 import siteConfiguration from "./.figma/make/site.json";
+import { buildSitemapXml } from "./scripts/sitemap.mjs";
+import type { IncomingMessage, ServerResponse } from "node:http";
 
 // Vite config — https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -21,6 +23,7 @@ export default defineConfig(({ mode }) => {
       react(),
       tailwindcss(),
       figmaSiteConfiguration(siteConfiguration),
+      seoSitemap(),
       figmaErrorOverlayReplay(),
       figmaReactRefreshBoundaryFallback(),
       figmaMakeKitPlugin({ storiesGlob: "/src/**/*.stories.{ts,tsx,js,jsx}" }),
@@ -72,6 +75,27 @@ type FigmaSiteConfiguration = {
     addBypassLinks?: boolean;
   };
 };
+
+/**
+ * Serves /sitemap.xml built from seo/keywords.json and seo/countries.json on every
+ * request, in dev and preview. The build writes the same XML to dist/sitemap.xml.
+ */
+function seoSitemap(): Plugin {
+  function serve(req: IncomingMessage, res: ServerResponse, next: () => void) {
+    if (req.url?.split("?")[0] !== "/sitemap.xml") return next();
+    res.setHeader("Content-Type", "application/xml; charset=utf-8");
+    res.end(buildSitemapXml());
+  }
+  return {
+    name: "seo-sitemap",
+    configureServer(server) {
+      server.middlewares.use(serve);
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(serve);
+    },
+  };
+}
 
 /** Applies /.figma/make/site.json to the generated document shell. */
 function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
