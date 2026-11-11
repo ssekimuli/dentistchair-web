@@ -1,0 +1,34 @@
+[
+  {
+    "title": "Patient self-service",
+    "copy": "Patients book appointments, register themselves and securely submit their details before they arrive."
+  },
+  {
+    "title": "Social appointment inbox",
+    "copy": "Receive appointment requests from all your social media channels directly inside DentiChair."
+  },
+  {
+    "title": "Automatic reminders",
+    "copy": "Reduce no-shows with timely SMS, email and in-app appointment reminders and notifications."
+  },
+  {
+    "title": "Clinical records & HMIS",
+    "copy": "Complete HMIS-ready clinical records with medical history, notes, odontograms and periodontal charts."
+  },
+  {
+    "title": "X-rays & diagnostics",
+    "copy": "Upload, view and organize patient X-rays, scans and diagnostic images directly in the clinical record."
+  },
+  {
+    "title": "Billing & payments",
+    "copy": "Simple invoices, insurance claims, payment plans and financial visibility."
+  },
+  {
+    "title": "Laboratory management",
+    "copy": "Request tests, receive lab results and track dental laboratory cases from impression to fitting."
+  },
+  {
+    "title": "Easy, lossless migration",
+    "copy": "Move from Excel or another system without losing patient, appointment or financial data."
+  }
+]
