@@ -9,7 +9,7 @@ const pageLabels: Record<Page, string> = {
   solutions: "Solutions",
   pricing: "Pricing",
   about: "About us",
-  contact: "Book a demo",
+  contact: "Request trial",
 };
 
 function Icon({
@@ -206,7 +206,7 @@ function Navbar({ page, navigate }: { page: Page; navigate: (page: Page) => void
         <div className="nav-actions">
           <button className="sign-in">Sign in</button>
           <Button onClick={() => navigate("contact")}>
-            Book a demo <Icon name="arrow" size={16} />
+            Request trial <Icon name="arrow" size={16} />
           </Button>
         </div>
         <button
@@ -237,7 +237,7 @@ function Navbar({ page, navigate }: { page: Page; navigate: (page: Page) => void
               setOpen(false);
             }}
           >
-            Book a demo
+            Request trial
           </Button>
         </div>
       )}
@@ -861,7 +861,7 @@ function CTA({ navigate }: { navigate: (page: Page) => void }) {
             </p>
             <div>
               <Button variant="light" onClick={() => navigate("contact")}>
-                Book your free demo <Icon name="arrow" size={16} />
+                Request your 2-month trial <Icon name="arrow" size={16} />
               </Button>
               <button className="text-button">Or start free today</button>
             </div>
@@ -1284,7 +1284,7 @@ function AboutPage({ navigate }: { navigate: (page: Page) => void }) {
   );
 }
 
-function WaitingListForm() {
+function TrialRequestForm() {
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<WaitingListResult | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
@@ -1313,7 +1313,7 @@ function WaitingListForm() {
         <span>
           <Icon name="check" size={28} />
         </span>
-        <h2>You’re on the waiting list.</h2>
+        <h2>Your trial request is in.</h2>
         <p>{result.message}</p>
       </div>
     );
@@ -1323,8 +1323,8 @@ function WaitingListForm() {
 
   return (
     <form onSubmit={submit} noValidate>
-      <h2>Join the waiting list</h2>
-      <p>Tell us where you are and we’ll contact you when a spot opens.</p>
+      <h2>Request your 2-month trial</h2>
+      <p>Tell us where you are and we’ll contact you to set up your trial.</p>
       <label>
         Email address
         <input required type="email" name="client_email" placeholder="jane@example.com" />
@@ -1353,31 +1353,26 @@ function WaitingListForm() {
         </p>
       )}
       <Button type="submit">
-        {submitting ? "Joining…" : "Join the waiting list"} <Icon name="arrow" size={17} />
+        {submitting ? "Requesting…" : "Request my trial"} <Icon name="arrow" size={17} />
       </Button>
     </form>
   );
 }
 
 function ContactPage() {
-  const [submitted, setSubmitted] = useState(false);
-  const submit = (e: FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
   return (
     <section className="contact-page">
       <div className="container contact-grid">
         <div className="contact-copy">
-          <Badge>PERSONALIZED DEMO</Badge>
-          <h1>See what smoother practice management feels like.</h1>
+          <Badge>2-MONTH FREE TRIAL</Badge>
+          <h1>Try DentiChair free for two months.</h1>
           <p>
-            Tell us a little about your practice. A DentiChair specialist will show you how the
-            platform fits your workflows and answer every question.
+            Request your trial and we’ll help you set up DentiChair for your clinic. Every feature
+            is included, with no setup fees and no lock-in contract.
           </p>
           <div className="demo-points">
             {[
-              ["calendar", "30-minute personalized walkthrough"],
+              ["calendar", "Two months with every feature included"],
               ["users", "Tailored to your practice and team"],
               ["desktop", "No pressure. Just helpful answers."],
             ].map(([icon, text]) => (
@@ -1413,84 +1408,7 @@ function ContactPage() {
           </blockquote>
         </div>
         <div className="form-card">
-          {submitted ? (
-            <div className="form-success">
-              <span>
-                <Icon name="check" size={28} />
-              </span>
-              <h2>Your demo is on its way.</h2>
-              <p>
-                Thanks for telling us about your practice. A DentiChair specialist will contact you
-                within one business day.
-              </p>
-            </div>
-          ) : (
-            <form onSubmit={submit}>
-              <h2>Book your free demo</h2>
-              <p>We’ll be in touch within one business day.</p>
-              <div className="form-row">
-                <label>
-                  First name
-                  <input required placeholder="Amara" />
-                </label>
-                <label>
-                  Last name
-                  <input required placeholder="Okafor" />
-                </label>
-              </div>
-              <label>
-                Work email
-                <input required type="email" placeholder="amara@yourclinic.com" />
-              </label>
-              <label>
-                Phone number
-                <input required type="tel" placeholder="+234 000 000 0000" />
-              </label>
-              <div className="form-row">
-                <label>
-                  Practice name
-                  <input required placeholder="Your clinic" />
-                </label>
-                <label>
-                  Team size
-                  <select defaultValue="">
-                    <option value="" disabled>
-                      Select
-                    </option>
-                    <option>1–5</option>
-                    <option>6–15</option>
-                    <option>16–50</option>
-                    <option>50+</option>
-                  </select>
-                </label>
-              </div>
-              <label>
-                What would you most like to improve?
-                <select defaultValue="">
-                  <option value="" disabled>
-                    Choose an area
-                  </option>
-                  <option>Patient records</option>
-                  <option>HMIS, X-rays and laboratory records</option>
-                  <option>Appointments and queue</option>
-                  <option>Billing and reports</option>
-                  <option>Multi-location management</option>
-                  <option>All of the above</option>
-                </select>
-              </label>
-              <Button type="submit">
-                Request my demo <Icon name="arrow" size={17} />
-              </Button>
-              <small>
-                By submitting, you agree to our privacy policy. We’ll never share your details.
-              </small>
-            </form>
-          )}
-        </div>
-      </div>
-      <div className="container waiting-list">
-        <div className="form-card">
-          <WaitingListForm />
+          <TrialRequestForm />
         </div>
       </div>
     </section>
