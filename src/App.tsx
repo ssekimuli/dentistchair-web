@@ -265,13 +265,6 @@ function SectionTitle({
   );
 }
 
-const patients = [
-  ["AM", "Ama Mensah", "Root canal", "09:00", "In treatment"],
-  ["KO", "Kofi Owusu", "Check-up", "10:30", "Waiting"],
-  ["ZN", "Zara Ndlovu", "Whitening", "12:00", "Confirmed"],
-  ["DC", "Daniel Cole", "Crown fitting", "14:15", "Confirmed"],
-];
-
 function Shot({
   src,
   alt,
@@ -284,49 +277,6 @@ function Shot({
   return (
     <div className={`shot ${className}`}>
       <img src={src} alt={alt} loading="lazy" decoding="async" />
-    </div>
-  );
-}
-
-function CalendarMockup() {
-  const hours = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00"];
-  return (
-    <div className="product-window calendar-window">
-      <div className="calendar-head">
-        <div>
-          <small>APPOINTMENTS</small>
-          <strong>June 24 – 28, 2025</strong>
-        </div>
-        <div>
-          <button>‹</button>
-          <button>Today</button>
-          <button>›</button>
-        </div>
-      </div>
-      <div className="calendar-grid">
-        <div className="time-column">
-          {hours.map((h) => (
-            <span key={h}>{h}</span>
-          ))}
-        </div>
-        {["Mon 24", "Tue 25", "Wed 26", "Thu 27", "Fri 28"].map((d, i) => (
-          <div className={`day-column day-${i}`} key={d}>
-            <strong>{d}</strong>
-            <div className="appointment a1">
-              <b>{patients[i % 4][3]}</b>
-              {patients[i % 4][1]}
-              <small>{patients[i % 4][2]}</small>
-            </div>
-            {i !== 3 && (
-              <div className="appointment a2">
-                <b>13:30</b>
-                {patients[(i + 1) % 4][1]}
-                <small>Consultation</small>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
@@ -409,14 +359,10 @@ function Hero({ navigate }: { navigate: (page: Page) => void }) {
           </div>
         </div>
         <div className="trusted">
-          <span>TRUSTED BY MODERN DENTAL TEAMS ACROSS</span>
+          <span>TRUSTED BY DENTAL CLINICS ACROSS UGANDA</span>
           <div>
-            <b>ACCRA</b>
-            <b>NAIROBI</b>
-            <b>CAPE TOWN</b>
-            <b>LAGOS</b>
-            <b>LONDON</b>
-            <b>DUBAI</b>
+            <b>KAMPALA</b>
+            <b>MBALE</b>
           </div>
         </div>
       </div>
@@ -590,7 +536,11 @@ function SplitShowcase({
 }) {
   const visual =
     kind === "calendar" ? (
-      <CalendarMockup />
+      <Shot
+        src="/images/appointment%20module.png"
+        alt="DentiChair appointments week view showing scheduled and in-consultation patient bookings across the week"
+        className="shot-split"
+      />
     ) : kind === "billing" ? (
       <Shot
         src="/images/invoices.png"
@@ -948,10 +898,45 @@ function Footer({ navigate }: { navigate: (page: Page) => void }) {
   );
 }
 
+const onboardedClients = [
+  { name: "DOCDICO Dental Services", image: "DOCDICO DENTAL SERVICES.jpg" },
+  { name: "Arise Dental Care", image: "arise-dental-care.webp" },
+  { name: "Icon Dental Services Mbale", image: "icon-dental service-mbale.jpg" },
+  { name: "Rubaga Dental Surgery", image: "rubaga dental surgery.jpeg" },
+];
+
+function ClientsSection() {
+  return (
+    <section className="section clients-section">
+      <div className="container">
+        <SectionTitle
+          eyebrow="OUR CLIENTS"
+          title="Clinics already running on DentiChair."
+          copy="Dental practices that have moved their patients, appointments and records onto DentiChair."
+        />
+        <ul className="clients-grid">
+          {onboardedClients.map((client) => (
+            <li className="client-card" key={client.name}>
+              <img
+                src={`/images/clients/${encodeURIComponent(client.image)}`}
+                alt={`${client.name} logo`}
+                loading="lazy"
+                decoding="async"
+              />
+              <span>{client.name}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
 function HomePage({ navigate }: { navigate: (page: Page) => void }) {
   return (
     <>
       <Hero navigate={navigate} />
+      <ClientsSection />
       <FeatureGrid />
       <SplitShowcase
         kind="offline"
