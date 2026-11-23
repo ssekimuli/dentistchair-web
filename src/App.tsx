@@ -352,8 +352,8 @@ function Hero({ navigate }: { navigate: (page: Page) => void }) {
             </div>
             <img
               className="desktop-shot"
-              src="/images/dashboard.png"
-              alt="DentiChair Desktop dashboard showing revenue, active patients, appointments and today’s upcoming schedule"
+              src="/images/odontogram.png"
+              alt="DentiChair Desktop odontogram showing a patient's FDI tooth chart with status legend and live chart metrics"
               decoding="async"
             />
           </div>
